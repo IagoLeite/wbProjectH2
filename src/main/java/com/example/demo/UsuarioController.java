@@ -1,10 +1,10 @@
 package com.example.demo;
 
-import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
 
-@RestController // Adicionando a anotação RestController
+import org.springframework.web.bind.annotation.*;
+
+@RestController
 @RequestMapping("/api")
 public class UsuarioController {
     private final UsuarioManager manager;
@@ -13,12 +13,14 @@ public class UsuarioController {
         this.manager = manager;
     }
 
-    @PostMapping("/usuarios") 
+    @PostMapping("/usuarios")
     public Usuario createUsuario(@RequestBody Usuario usuario) {
         manager.adicionarUsuario(usuario);
         return usuario;
     }
 
-
-
+    @GetMapping("/users")
+    public List<Usuario> listar(){
+        return manager.listarUsuarios();
+    }
 }
