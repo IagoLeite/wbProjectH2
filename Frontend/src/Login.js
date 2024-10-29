@@ -5,6 +5,7 @@ export function Login() {
   const [formData, setFormData] = useState({
     email: "",
     senha: "",
+    nome: "",
   });
 
   const handleChange = (event) => {
@@ -16,27 +17,33 @@ export function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    
+    const usuario = {
+      email: formData.email,
+      senha: formData.senha,
+      nome: formData.nome, // Adicione um campo para o nome se necessário
+    };
+  
     try {
-      const response = await fetch("https://sua-api/login", {
-        method: "POST",
+      const response = await fetch('https://spidery-fishsticks-4j649wvv79hwwq-8080.app.github.dev/api/usuarios', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(usuario),
       });
-
-      if (!response.ok) {
-        throw new Error("Login failed. Please check your credentials.");
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Usuário criado:', data);
+      } else {
+        console.error('Erro ao criar usuário:', response.statusText);
       }
-
-      const data = await response.json();
-      console.log("Login successful:", data);
     } catch (error) {
-      console.error("Login error:", error);
-      alert(error.message);
+      console.error('Erro na requisição:', error);
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit}>

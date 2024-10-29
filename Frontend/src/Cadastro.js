@@ -5,8 +5,9 @@ export function Cadastro() {
   const [formData, setFormData] = useState({
     email: "",
     senha: "",
-    confirmaSenha: "",
-  });
+    nome: "", // Adicione o campo nome aqui
+});
+
 
   const handleChange = (event) => {
     setFormData({
@@ -14,35 +15,35 @@ export function Cadastro() {
       [event.target.name]: event.target.value,
     });
   };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    
+    const usuario = {
+      email: formData.email,
+      senha: formData.senha,
+      nome: formData.nome, // Certifique-se de que este campo existe no formulário
+    };
 
-    if (formData.senha !== formData.confirmaSenha) {
-      alert("As senhas não coincidem");
-      return;
-    }
-
-    fetch("https://sua-api/cadastro", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao cadastrar");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Cadastro realizado com sucesso:", data);
-      })
-      .catch((error) => {
-        console.error("Erro ao cadastrar:", error);
+    try {
+      const response = await fetch('https://spidery-fishsticks-4j649wvv79hwwq-8080.app.github.dev/api/usuarios', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(usuario),
       });
-  };
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Usuário criado:', data);
+      } else {
+        console.error('Erro ao criar usuário:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+    }
+};
+
 
   return (
     <form onSubmit={handleSubmit}>
@@ -65,11 +66,11 @@ export function Cadastro() {
         />
       </label>
       <label>
-        Confirmar Senha:
+        Nome:
         <input
-          type="password"
-          name="confirmaSenha"
-          value={formData.confirmaSenha}
+          type="name"
+          name="nome"
+          value={formData.nome}
           onChange={handleChange}
         />
       </label>

@@ -13,8 +13,10 @@ public class UsuarioManager {
     }
 
     public void adicionarUsuario(Usuario usuario) {
+        System.out.println("Adicionando usuário: " + usuario);
         usuarioRepository.save(usuario);
     }
+    
 
     public List<Usuario> listarUsuarios() {
         return usuarioRepository.findAll();
