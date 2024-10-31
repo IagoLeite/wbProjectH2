@@ -25,12 +25,13 @@ export function Cadastro() {
     };
 
     try {
-      const response = await fetch('https://spidery-fishsticks-4j649wvv79hwwq-8080.app.github.dev/api/usuarios', {
+      const response = await fetch('https://unearthly-broomstick-5gq5g564r5gq2q6g-8080.app.github.dev/api/usuarios', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(usuario),
+        mode: 'no-cors'
       });
 
       if (response.ok) {
